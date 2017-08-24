@@ -1,0 +1,4 @@
+social_auth_box.settings.tab:
+  title: 'Box'
+  route_name: social_auth_box.settings_form
+  base_route: social_auth.integrations

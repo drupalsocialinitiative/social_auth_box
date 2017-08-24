@@ -1,0 +1,26 @@
+{
+    "name": "drupal/social_auth_box",
+    "type": "drupal-module",
+    "description": "Social Auth integration for Box.",
+    "keywords": ["Drupal"],
+    "license": "GPL-2.0+",
+    "homepage": "https://www.drupal.org/project/social_auth_box",
+    "minimum-stability": "dev",
+    "support": {
+        "issues": "https://www.drupal.org/project/issues/social_auth_box",
+        "source": "http://cgit.drupalcode.org/social_auth_box"
+    },
+    "require": {
+        "stevenmaguire/oauth2-box": "^2.0"
+    },
+    "authors": [
+        {
+            "name": "Getulio Valentin Sánchez (gvso)",
+            "email": "valentin2507@gmail.com"
+        },
+        {
+            "name": "Himanshu Dixit (himanshu-dixit)",
+            "email": "hudixt@gmail.com"
+        }
+    ]
+}

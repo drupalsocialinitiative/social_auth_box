@@ -1,0 +1,25 @@
+social_auth_box.redirect_to_box:
+  path: 'user/login/box'
+  defaults:
+    _controller: '\Drupal\social_auth_box\Controller\BoxAuthController::redirectToBox'
+  requirements:
+    _role: 'anonymous'
+  options:
+    no_cache: TRUE
+
+social_auth_box.callback:
+  path: 'user/login/box/callback'
+  defaults:
+    _controller: '\Drupal\social_auth_box\Controller\BoxAuthController::callback'
+  requirements:
+    _role: 'anonymous'
+  options:
+    no_cache: TRUE
+
+social_auth_box.settings_form:
+  path: 'admin/config/social-api/social-auth/box'
+  defaults:
+    _title: 'Social Auth Box settings'
+    _form: '\Drupal\social_auth_box\Form\BoxAuthSettingsForm'
+  requirements:
+    _permission: 'administer social api authentication'
