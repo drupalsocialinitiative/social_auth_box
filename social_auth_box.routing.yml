@@ -1,9 +1,10 @@
 social_auth_box.redirect_to_box:
   path: 'user/login/box'
   defaults:
-    _controller: '\Drupal\social_auth_box\Controller\BoxAuthController::redirectToBox'
+    _controller: '\Drupal\social_auth_box\Controller\BoxAuthController::redirectToProvider'
   requirements:
-    _role: 'anonymous'
+    # Anonymous users can log in, but authenticated users can also associate a new provider.
+    _access: 'TRUE'
   options:
     no_cache: TRUE
 
@@ -12,7 +13,8 @@ social_auth_box.callback:
   defaults:
     _controller: '\Drupal\social_auth_box\Controller\BoxAuthController::callback'
   requirements:
-    _role: 'anonymous'
+    # Anonymous users can log in, but authenticated users can also associate a new provider.
+    _access: 'TRUE'
   options:
     no_cache: TRUE
 

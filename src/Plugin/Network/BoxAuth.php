@@ -10,14 +10,14 @@ use Drupal\social_auth\SocialAuthDataHandler;
 use Drupal\social_api\Plugin\NetworkBase;
 use Drupal\social_api\SocialApiException;
 use Drupal\social_auth_box\Settings\BoxAuthSettings;
+use Stevenmaguire\OAuth2\Client\Provider\Box;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use League\OAuth2\Client\Provider\Box;
 use Drupal\Core\Site\Settings;
 
 /**
  * Defines a Network Plugin for Social Auth Box.
  *
- * @package Drupal\simple_box_connect\Plugin\Network
+ * @package Drupal\social_auth_box\Plugin\Network
  *
  * @Network(
  *   id = "social_auth_box",
@@ -66,7 +66,7 @@ class BoxAuth extends NetworkBase implements BoxAuthInterface {
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
     return new static(
-      $container->get('social_auth.social_auth_data_handler'),
+      $container->get('social_auth.data_handler'),
       $configuration,
       $plugin_id,
       $plugin_definition,
@@ -108,8 +108,7 @@ class BoxAuth extends NetworkBase implements BoxAuthInterface {
                               ConfigFactoryInterface $config_factory,
                               LoggerChannelFactoryInterface $logger_factory,
                               RequestContext $requestContext,
-                              Settings $settings
-  ) {
+                              Settings $settings) {
 
     parent::__construct($configuration, $plugin_id, $plugin_definition, $entity_type_manager, $config_factory);
 
@@ -122,8 +121,9 @@ class BoxAuth extends NetworkBase implements BoxAuthInterface {
   /**
    * Sets the underlying SDK library.
    *
-   * @return \League\OAuth2\Client\Provider\Box
+   * @return \Stevenmaguire\OAuth2\Client\Provider\Box|false
    *   The initialized 3rd party library instance.
+   *   False if library could not be initialized.
    *
    * @throws SocialApiException
    *   If the SDK library does not exist.
@@ -134,29 +134,25 @@ class BoxAuth extends NetworkBase implements BoxAuthInterface {
     if (!class_exists($class_name)) {
       throw new SocialApiException(sprintf('The Box Library for the league oAuth not found. Class: %s.', $class_name));
     }
+
     /* @var \Drupal\social_auth_box\Settings\BoxAuthSettings $settings */
     $settings = $this->settings;
-    // Proxy configuration data for outward proxy.
-    $proxyUrl = $this->siteSettings->get("http_client_config")["proxy"]["http"];
+
     if ($this->validateConfig($settings)) {
       // All these settings are mandatory.
+      $league_settings = [
+        'clientId' => $settings->getClientId(),
+        'clientSecret' => $settings->getClientSecret(),
+        'redirectUri' => $this->requestContext->getCompleteBaseUrl() . '/user/login/box/callback',
+      ];
+
+      // Proxy configuration data for outward proxy.
+      $proxyUrl = $this->siteSettings->get('http_client_config')['proxy']['http'];
       if ($proxyUrl) {
-        $league_settings = [
-          'clientId' => $settings->getClientId(),
-          'clientSecret' => $settings->getClientSecret(),
-          'redirectUri' => $this->requestContext->getCompleteBaseUrl() . '/user/login/box/callback',
-          'proxy' => $proxyUrl,
-        ];
-      }
-      else {
-        $league_settings = [
-          'clientId' => $settings->getClientId(),
-          'clientSecret' => $settings->getClientSecret(),
-          'redirectUri' => $this->requestContext->getCompleteBaseUrl() . '/user/login/box/callback',
-        ];
+        $league_settings['proxy'] = $proxyUrl;
       }
 
-      return new \Stevenmaguire\OAuth2\Client\Provider\Box($league_settings);
+      return new Box($league_settings);
     }
     return FALSE;
   }

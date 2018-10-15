@@ -107,12 +107,37 @@ class BoxAuthSettingsForm extends SocialAuthSettingsForm {
       '#default_value' => $GLOBALS['base_url'] . '/user/login/box/callback',
     ];
 
-    $form['box_settings']['authorized_javascript_origin'] = [
+    $form['box_settings']['cors_domains'] = [
       '#type' => 'textfield',
       '#disabled' => TRUE,
       '#title' => $this->t('CORS Domains'),
       '#description' => $this->t('Copy this value to <em>CORS Domains</em> field of your Box App settings.'),
       '#default_value' => $this->requestContext->getHost(),
+    ];
+
+    $form['box_settings']['advanced'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Advanced settings'),
+      '#open' => FALSE,
+    ];
+
+    $form['box_settings']['advanced']['scopes'] = [
+      '#type' => 'textarea',
+      '#title' => $this->t('Scopes for API call'),
+      '#default_value' => $config->get('scopes'),
+      '#description' => $this->t('Define any additional scopes to be requested, separated by a comma (e.g.: item_preview,item_upload).<br>
+                                  No scopes is added by default.<br>
+                                  You can see the full list of valid scopes <a href="@scopes">here</a>.', ['@scopes' => 'https://developer.box.com/reference#section-scopes']),
+    ];
+
+    $form['box_settings']['advanced']['endpoints'] = [
+      '#type' => 'textarea',
+      '#title' => $this->t('API calls to be made to collect data'),
+      '#default_value' => $config->get('endpoints'),
+      '#description' => $this->t('Define the Endpoints to be requested when user authenticates with Box for the first time<br>
+                                  Enter each endpoint in different lines in the format <em>endpoint</em>|<em>name_of_endpoint</em>.<br>
+                                  <b>For instance:</b><br>
+                                  /2.0/events/|events<br>'),
     ];
 
     return parent::buildForm($form, $form_state);
@@ -126,6 +151,8 @@ class BoxAuthSettingsForm extends SocialAuthSettingsForm {
     $this->config('social_auth_box.settings')
       ->set('client_id', $values['client_id'])
       ->set('client_secret', $values['client_secret'])
+      ->set('scopes', $values['scopes'])
+      ->set('endpoints', $values['endpoints'])
       ->save();
 
     parent::submitForm($form, $form_state);
