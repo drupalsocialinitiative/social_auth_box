@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 class BoxAuthController extends OAuth2ControllerBase {
 
   /**
-   * GoogleAuthController constructor.
+   * BoxAuthController constructor.
    *
    * @param \Drupal\Core\Messenger\MessengerInterface $messenger
    *   The messenger service.

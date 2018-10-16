@@ -154,6 +154,7 @@ class BoxAuth extends NetworkBase implements BoxAuthInterface {
 
       return new Box($league_settings);
     }
+
     return FALSE;
   }
 
