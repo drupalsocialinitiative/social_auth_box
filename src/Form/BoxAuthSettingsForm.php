@@ -58,14 +58,6 @@ class BoxAuthSettingsForm extends SocialAuthSettingsForm {
       '#description' => $this->t('Copy the Client Secret here.'),
     ];
 
-    $form['box_settings']['authorized_redirect_url'] = [
-      '#type' => 'textfield',
-      '#disabled' => TRUE,
-      '#title' => $this->t('OAuth 2.0 Redirect URI'),
-      '#description' => $this->t('Copy this value to <em>OAuth 2.0 Redirect URI</em> field of your Box App settings.'),
-      '#default_value' => Url::fromRoute('social_auth_box.callback')->setAbsolute()->toString(),
-    ];
-
     $form['box_settings']['advanced'] = [
       '#type' => 'details',
       '#title' => $this->t('Advanced settings'),

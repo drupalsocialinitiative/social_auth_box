@@ -2,7 +2,7 @@
 
 namespace Drupal\social_auth_box\Plugin\Network;
 
-use Drupal\social_api\Plugin\NetworkInterface;
+use Drupal\social_auth\Plugin\Network\NetworkInterface;
 
 /**
  * Defines the Box Auth interface.
