@@ -3,7 +3,6 @@
 namespace Drupal\social_auth_box\Form;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Url;
 use Drupal\social_auth\Form\SocialAuthSettingsForm;
 
 /**
@@ -70,7 +69,8 @@ class BoxAuthSettingsForm extends SocialAuthSettingsForm {
       '#default_value' => $config->get('scopes'),
       '#description' => $this->t('Define any additional scopes to be requested, separated by a comma (e.g.: item_preview,item_upload).<br>
                                   No scopes is added by default.<br>
-                                  You can see the full list of valid scopes <a href="@scopes">here</a>.', ['@scopes' => 'https://developer.box.com/reference#section-scopes']),
+                                  You can see the full list of valid scopes <a href="@scopes">here</a>.',
+                                  ['@scopes' => 'https://developer.box.com/reference#section-scopes']),
     ];
 
     $form['box_settings']['advanced']['endpoints'] = [
