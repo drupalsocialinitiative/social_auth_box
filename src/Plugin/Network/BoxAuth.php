@@ -34,7 +34,7 @@ class BoxAuth extends NetworkBase implements BoxAuthInterface {
    *   The initialized 3rd party library instance.
    *   False if library could not be initialized.
    *
-   * @throws SocialApiException
+   * @throws \Drupal\social_api\SocialApiException
    *   If the SDK library does not exist.
    */
   protected function initSdk() {

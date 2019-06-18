@@ -70,21 +70,13 @@ class BoxAuthController extends OAuth2ControllerBase {
    */
   public function callback() {
 
-    $request_query = $this->request->getCurrentRequest()->query;
-
-    // Checks if authentication failed.
-    if ($request_query->has('error')) {
-      $this->messenger->addError($this->t('You could not be authenticated.'));
-
-      $response = $this->userAuthenticator->dispatchAuthenticationError($request_query->get('error'));
-      if ($response) {
-        return $response;
-      }
-
-      return $this->redirect('user.login');
+    // Checks if there was an authentication error.
+    $redirect = $this->checkAuthError();
+    if ($redirect) {
+      return $redirect;
     }
 
-    /* @var \Stevenmaguire\OAuth2\Client\Provider\BoxResourceOwner|null $profile */
+    /** @var \Stevenmaguire\OAuth2\Client\Provider\BoxResourceOwner|null $profile */
     $profile = $this->processCallback();
 
     // If authentication was successful.
